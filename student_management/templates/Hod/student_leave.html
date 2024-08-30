@@ -1,0 +1,65 @@
+{% extends 'base.html' %}
+
+{% block content %}
+  <div class="content container-fluid">
+    <div class="page-header">
+      <div class="row align-items-center">
+        <div class="col">
+          <h3 class="page-title">Student Leave</h3>
+          <ul class="breadcrumb">
+            <li class="breadcrumb-item">
+              <a>Dashboard</a>
+            </li>
+            <li class="breadcrumb-item active">Student Leave</li>
+          </ul>
+        </div>
+        
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-sm-12">
+        <div class="card card-table">
+          <div class="card-body">
+            <div class="table-responsive">
+              {% include 'includes/messages.html' %}
+              <table id="table_id" class="table table-hover table-center mb-0">
+                <thead>
+                  <tr>
+                    <th>ID</th>
+                    <th>Staff Name</th>
+                    <th>Leave Date</th>
+                    <th>Message</th>
+                    <th class="text-right">Action</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {% for student_leave in student_leave %}
+                    <tr>
+                      <td>{{ student_leave.id }}</td>
+                      <td>{{ student_leave.student_id.admin.first_name }} {{ student_leave.student_id.admin.last_name }}</td>
+                      <td>{{ student_leave.date }}</td>
+                      <td>{{ student_leave.message }}</td>
+
+                      <td class="text-right">
+                        <div class="actions">
+                            {% if student_leave.status == 0 %}
+                            <a href="{% url 'student_approve_leave' student_leave.id %}" class="btn btn-success">Approve</a>
+                            <a href="{% url 'student_disapprove_leave' student_leave.id %}" class="btn btn-danger">Disapprove</a>
+                            {% elif student_leave.status == 1 %}
+                            <a href="" class="btn btn-success" disabled="disabled">Approved</a>
+                            {% else %}
+                            <a href="" class="btn btn-danger" disabled="disabled">Disapproved</a>
+                            {% endif %}
+                        </div>
+                      </td>
+                    </tr>
+                  {% endfor %}
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+{% endblock %}

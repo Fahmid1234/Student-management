@@ -1,0 +1,76 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="content container-fluid">
+    <div class="page-header">
+      <div class="row align-items-center">
+        <div class="col">
+          <h3 class="page-title">Add Bus Information</h3>
+          <ul class="breadcrumb">
+            <li class="breadcrumb-item">
+              <a>Dashboard</a>
+            </li>
+            <li class="breadcrumb-item active">Add Bus Information</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+    {% include 'includes/messages.html' %}
+    <div class="row">
+      <div class="col-sm-12">
+        <div class="card">
+          <div class="card-body">
+            <form action="{% url 'transport_bus_save' %}" method="post">
+              {% csrf_token %}
+              <div class="row">
+                <div class="col-12">
+                  <h5 class="form-title"><span>Bus Add</span></h5>
+                </div>
+                <div class="col-12 col-sm-11">
+                  <div class="form-group">
+                    <label for="">Bus Number</label>
+                    <input type="text" name="bus_number" class="form-control" required>
+                  </div>
+                </div>
+
+                <div class="col-12 col-sm-11 mb-3">
+                  <div class="form-group">
+                    <label for="">Where From</label>
+                    <input type="text" name="where_from" class="form-control" required>
+                  </div>
+                </div>
+
+                <div class="col-12 col-sm-11 mb-3">
+                  <div class="form-group">
+                    <label for="">Where To</label>
+                    <input type="text" name="where_to" class="form-control" required>
+                  </div>
+                </div>
+
+                <div class="col-12 col-sm-11 mb-4">
+                  <select name="driver_name" class="form-control" required>
+                    <option value="">Select Driver Name</option>
+                    {% for i in driver %}
+                    <option value="{{i.name}}">{{i.name}}</option>
+                    {% endfor %}
+                  </select>
+                </div>
+
+                <div class="col-12 col-sm-11">
+                    <div class="form-group">
+                      <label for="">Time</label>
+                      <input type="time" name="time" class="form-control" required>
+                    </div>
+                  </div>
+
+                <div class="col-12">
+                  <button type="submit" class="btn btn-primary">Save Bus</button>
+                </div>
+              </div>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+{% endblock %}

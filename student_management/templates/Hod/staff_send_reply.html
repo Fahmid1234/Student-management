@@ -1,0 +1,141 @@
+{% extends 'base.html' %}
+
+{% block content %}
+  <div class="content container-fluid">
+    <div class="page-header">
+      <div class="row align-items-center">
+        <div class="col">
+          <h3 class="page-title">All Staff's Feedback</h3>
+          <ul class="breadcrumb">
+            <li class="breadcrumb-item">
+              <a>Dashboard</a>
+            </li>
+            <li class="breadcrumb-item active">All Staff's Feedback</li>
+          </ul>
+        </div>
+
+        <div class="col-auto text-right float-right ml-auto">
+          <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal"><i class="fas fa-bell"></i> View All Staff's Feedback</button>
+        </div>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-sm-12">
+        <div class="card card-table">
+          <div class="card-body">
+            <div class="table-responsive">
+              {% include 'includes/messages.html' %}
+              <table id="table_id" class="table table-hover table-center mb-0">
+                <thead>
+                  <tr>
+                    <th class="text-center">ID</th>
+                    <th class="text-center">Staff Name</th>
+                    <th class="text-center">Feedback</th>
+                    <th class="text-center">Date</th>
+                    <th class="text-center">Action</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {% for staff in staff %}
+                    <tr>
+                      <td class="text-center">{{ staff.id }}</td>
+                      <td class="text-center">{{ staff.staff_id.admin.first_name }} {{ staff.staff_id.admin.last_name }}</td>
+                      <td class="text-center">{{ staff.feedback }}</td>
+                      <td class="text-center">{{ staff.created_at }}</td>
+                      <td class="text-center">
+                        <div class="actions">
+                          <button type="button" class="btn btn-success" data-bs-toggle="modal" data-bs-target="#send_notification-{{forloop.counter}}">Reply</button>
+                        </div>
+                      </td>
+                    </tr>
+                  {% endfor %}
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <!-- Modal -->
+
+  <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h1 class="modal-title fs-5" id="exampleModalLabel">Modal title</h1>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+            <div class="row">
+                <div class="col-sm-12">
+                  <div class="card card-table">
+                    <div class="card-body">
+                      <div class="table-responsive">
+                        {% include 'includes/messages.html' %}
+                        <table id="table_id" class="table table-hover table-center mb-0">
+                          <thead>
+                            <tr>
+                              <th style="width: 60%;">Feedback</th>
+                              <th style="width: 30%;" class="text-right">Reply</th>
+                            </tr>
+                          </thead>
+                          <tbody>
+                            {% for i in feedback_history %}
+                              <tr>
+                                <td>{{ i.feedback }}</td>
+                                {% if i.status == 0 %}
+                                <td class="text-right"><span class="badge text-bg-danger">No Reply</span></td>
+                                {% else %}
+                                <td class="text-right"><span>{{i.feedback_reply}}</span></td>
+                                {% endif %}
+                              </tr>
+                            {% endfor %}
+                          </tbody>
+                        </table>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+          <button type="button" class="btn btn-primary">Save changes</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+
+{% for staff in staff %}
+  <div class="modal fade" id="send_notification-{{forloop.counter}}" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h1 class="modal-title fs-5" id="exampleModalLabel">Send Reply to {{staff.staff_id.admin.first_name}} {{staff.staff_id.admin.last_name}}</h1>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+            
+            <form method='post' action="{% url 'send_staff_reply' %}">
+                {% csrf_token %}
+                <div class="mb-3">
+                  
+                  <textarea name="feedback_reply" rows="4" class="form-control"></textarea>
+                  <input type="text" class="form-control" value="{{staff.id}}" name="feedback_id" hidden>
+                  
+                </div>
+                
+                <button type="submit" class="btn btn-primary">Send</button>
+              </form>
+
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+        </div>
+      </div>
+    </div>
+  </div>
+  {% endfor %}
+{% endblock %}

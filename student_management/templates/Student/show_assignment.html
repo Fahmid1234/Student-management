@@ -1,0 +1,94 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="page-header">
+    <div class="row align-items-center">
+      <div class="col">
+        <h3 class="page-title">Show & Submit Assignment</h3>
+        <ul class="breadcrumb">
+          <li class="breadcrumb-item">
+            <a>Dashboard</a>
+          </li>
+          <li class="breadcrumb-item active">Show & Submit Assignment</li>
+        </ul>
+      </div>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-sm-12">
+      <div class="card card-table">
+        <div class="card-body">
+          <div class="table-responsive">
+            {% include 'includes/messages.html' %}
+            <table id="table_id" class="table table-hover table-center mb-0">
+              <thead>
+                <tr>
+                  <th class="text-center">ID</th>
+                  <th class="text-center text-wrap">Assignment</th>
+                  <th class="text-center">Submission Last Time</th>
+                  <th class="text-center">Subject</th>
+                  <th class="text-center">Status</th>
+                </tr>
+              </thead>
+              <tbody>
+                {% for pdf in assignments %}
+                  <tr>
+                    <td class="text-center">{{ forloop.counter }}</td>
+                    <td class="text-center">
+                      <a href="{{ pdf.pdf_file.url }}" download>Download Assignment</a>
+                    </td>
+                    <td class="text-center">
+                      {{ pdf.submission_last_date }}<br />{{ pdf.submission_last_time }}
+                    </td>
+                    <td class="text-center">{{ pdf.subject.name }}</td>
+                    <td class="text-center">
+                        {% if pdf.id in submitted_assignment_ids %}
+                            <span class="badge badge-success">Submitted</span>
+                        {% elif pdf.submission_last_date < today %}
+                            <span class="badge badge-danger">Submission time is over!</span>
+                        {% else %}
+                            <span class="badge badge-warning">
+                                Pending ({{ pdf.submission_last_date|timeuntil }} left)
+                            </span>
+                        {% endif %}
+                    </td>
+                  </tr>
+                {% endfor %}
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </div>
+</div>
+
+<br>
+<hr>
+<br>
+
+<div class="container">
+    <h4>Submit Assignment</h4><br>
+
+    <form action="{% url 'assignment_submit' %}" method="post" enctype="multipart/form-data">
+        {% csrf_token %}
+        <div class="form-group">
+            <label for="assignment">Select Assignment:</label>
+            <select id="assignment" name="assignment" class="form-control" required>
+                {% for assignment in assignments %}
+                    {% if assignment.id not in submitted_assignment_ids and assignment.submission_last_date >= today %}
+                        <option value="{{ assignment.id }}">{{ assignment.subject.name }} - {{ assignment.session_year.start_session }} to {{ assignment.session_year.end_session }}</option>
+                    {% endif %}
+                {% endfor %}
+            </select>
+        </div>
+        
+        <div class="form-group">
+            <label for="submission_file">Upload PDF:</label>
+            <input type="file" id="submission_file" name="submission_file" class="form-control" accept="application/pdf" required>
+        </div>
+        
+        <button type="submit" class="btn btn-primary">Submit</button>
+    </form>
+</div>
+{% endblock %}

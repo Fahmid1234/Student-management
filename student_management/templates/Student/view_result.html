@@ -1,0 +1,53 @@
+{% extends 'base.html' %}
+
+{% block content %}
+  <div class="content container-fluid">
+    <div class="page-header">
+      <div class="row align-items-center">
+        <div class="col">
+          <h3 class="page-title">View Result</h3>
+          <ul class="breadcrumb">
+            <li class="breadcrumb-item">
+              <a>Dashboard</a>
+            </li>
+            <li class="breadcrumb-item active">View Result</li>
+          </ul>
+        </div>
+        
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-sm-12">
+        <div class="card card-table">
+          <div class="card-body">
+            <div class="table-responsive">
+              {% include 'includes/messages.html' %}
+              <table id="table_id" class="table table-hover table-center mb-0">
+                <thead>
+                  <tr>
+                    <th class="text-center">ID</th>
+                    <th class="text-center">Subject</th>
+                    <th class="text-center">Class Test Mark</th>
+                    <th class="text-center">Midterm Exam Mark</th>
+                    <th class="text-center">Final Exam Mark</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {% for result in result %}
+                    <tr>
+                      <td class="text-center">{{ result.id }}</td>
+                      <td class="text-center">{{ result.subject_id.name }}</td>
+                      <td class="text-center">{{ result.class_test_mark }}</td>
+                      <td class="text-center">{{ result.mid_exm_mark }}</td>
+                      <td class="text-center">{{ result.final_exm_mark }}</td>
+                    </tr>
+                  {% endfor %}
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+{% endblock %}

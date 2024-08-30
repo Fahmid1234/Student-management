@@ -1,0 +1,94 @@
+{% extends 'base.html' %}
+
+{% block content %}
+{% if action is None %}
+  <div class="row">
+    <div class="col-sm-12">
+      <div class="card">
+        <div class="card-body">
+          <form method="post" action="?action=view_attendance">
+            {% csrf_token %}
+
+            <div class="col-12">
+              <h5 class="form-title"><span>View Attendance</span></h5>
+            </div>
+            {% include 'includes/messages.html' %}
+            <div class="col-12 col-sm-10">
+                <label>Subject</label>
+                <select class="form-control" name="subject_id">
+                  <option>Select Subject</option>
+                  {% for subject in subject %}
+                    <option value="{{ subject.id }}">{{ subject.name }}</option>
+                  {% endfor %}
+                </select>
+              </div>
+            </div>
+
+            <div class="col-12">
+              <button type="submit" class="btn btn-primary">View Attendance</button>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+  {% else %}
+  <div class="row">
+    <div class="col-sm-12">
+      <div class="card">
+        <div class="card-body">
+          <form>
+            {% csrf_token %}
+
+            <div class="col-12">
+              <h5 class="form-title"><span>View Attendance</span></h5>
+            </div>
+            {% include 'includes/messages.html' %}
+            <div class="col-12 col-sm-10">
+                <label>Subject</label>
+                <select class="form-control" name="subject_id" disabled>
+                    <option value="{{ get_subject.id }}">{{ get_subject }}</option>
+                </select>
+              </div>
+            </div>
+
+            <div class="col-12">
+                <div class="row">
+                    <div class="col-sm-12">
+                      <div class="card card-table">
+                        <div class="card-body">
+                          <div class="table-responsive">
+                            {% include 'includes/messages.html' %}
+                            <table id="table_id" class="table table-hover table-center mb-0">
+                              <thead>
+                                <tr>
+                                  <th class="text-center">Date</th>
+                                  <th class="text-center">Subject Name</th>
+                                  <th class="text-center">Session Year</th>
+                                  
+                                </tr>
+                              </thead>
+                              <tbody>
+                                {% for attendance_report in attendance_report %}
+                                  <tr>
+                                    <td class="text-center">{{ attendance_report.attendance_id.attendance_date }}</td>
+                                    <td class="text-center">{{ attendance_report.attendance_id.subject_id.name }}</td>
+                                    <td class="text-center">{{ attendance_report.attendance_id.session_year_id.start_session }} to {{ attendance_report.attendance_id.session_year_id.end_session }}</td>
+                                  </tr>
+                                {% endfor %}
+                              </tbody>
+                            </table>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+              </div>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+  {% endif %}
+{% endblock %}

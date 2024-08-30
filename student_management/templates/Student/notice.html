@@ -1,0 +1,54 @@
+<style>
+    table td, thead th{
+        border: 2px solid #ECECEC;
+    }
+</style>
+
+{% extends 'base.html' %}
+
+{% block content %}
+  <div class="content container-fluid">
+    <div class="page-header">
+      <div class="row align-items-center">
+        <div class="col">
+          <h3 class="page-title">Transport Notice</h3>
+          <ul class="breadcrumb">
+            <li class="breadcrumb-item">
+              <a>Dashboard</a>
+            </li>
+            <li class="breadcrumb-item active">Transport Notice</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-sm-12">
+        <div class="card card-table">
+          <div class="card-body">
+            <div class="table-responsive">
+              {% include 'includes/messages.html' %}
+              <table id="table_id" class="table table-hover table-center mb-0">
+                <thead>
+                  <tr>
+                    <th class="text-center">ID</th>
+                    <th class="text-center text-wrap">Message</th>
+                    <th class="text-center">Created At</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {% for notice in notice %}
+                    <tr>
+                      <td class="text-center">{{ forloop.counter }}</td>
+                      <td class="text-wrap">{{ notice.message }}</td>
+                      <td class="text-center">{{ notice.created_at }}</td>
+                    </tr>
+                  {% endfor %}
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+{% endblock %}

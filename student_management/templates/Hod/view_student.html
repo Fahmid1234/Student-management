@@ -1,0 +1,72 @@
+{% extends 'base.html' %}
+
+{% block content %}
+  <div class="content container-fluid">
+    <div class="page-header">
+      <div class="row align-items-center">
+        <div class="col">
+          <h3 class="page-title">Students</h3>
+          <ul class="breadcrumb">
+            <li class="breadcrumb-item">
+              <a>Dashboard</a>
+            </li>
+            <li class="breadcrumb-item active">Students</li>
+          </ul>
+        </div>
+        
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-sm-12">
+        <div class="card card-table">
+          <div class="card-body">
+            <div class="table-responsive">
+              {% include 'includes/messages.html' %}
+              <table id="table_id" class="table table-hover table-center mb-0">
+                <thead>
+                  <tr>
+                    <th>ID</th>
+                    <th>Name</th>
+                    <th>Email</th>
+                    <th>Course</th>
+                    <th>Gender</th>
+                    <th>Address</th>
+                    <th>Session Start</th>
+                    <th>Session End</th>
+                    <th>Created At</th>
+                    <th>Updated At</th>
+                    <th class="text-right">Action</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {% for student in student %}
+                    <tr>
+                      <td>{{forloop.counter}}</td>
+                      <td>
+                          {{ student.admin.first_name }}&nbsp;{{ student.admin.last_name }}
+                      </td>
+                      <td>{{ student.admin.email }}</td>
+                      <td>{{ student.course_id.name }}</td>
+                      <td>{{ student.gender }}</td>
+                      <td>{{ student.address }}</td>
+                      <td>{{ student.session_id.start_session }}</td>
+                      <td>{{ student.session_id.end_session }}</td>
+                      <td>{{ student.created_at }}</td>
+                      <td>{{ student.updated_at }}</td>
+                      <td class="text-right">
+                        <div class="actions">
+                          <a href="{% url 'edit_student' student.id %}" class="btn btn-sm bg-success-light mr-2"><i class="fas fa-pen"></i></a>
+                          <a href="{% url 'delete_student' student.admin.id %}" class="btn btn-sm bg-danger-light"><i class="fas fa-trash"></i></a>
+                        </div>
+                      </td>
+                    </tr>
+                  {% endfor %}
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+{% endblock %}

@@ -1,0 +1,60 @@
+{% extends 'base.html' %}
+{% block content %}
+  <div class="content container-fluid">
+    <div class="page-header">
+      <div class="row align-items-center">
+        <div class="col">
+          <h3 class="page-title">View Profile</h3>
+          <ul class="breadcrumb">
+            <li class="breadcrumb-item">
+              <a>Dashboard</a>
+            </li>
+            <li class="breadcrumb-item active">View Profile</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+    <div class="row">
+      <div class="text-center">
+        <img src="{{ user.profile_pic.url }}" class="rounded" alt="..." />
+      </div>
+      <div class="col-sm-12">
+        <div class="card card-table">
+          <div class="card-body">
+            <div class="table-responsive">
+              {% include 'includes/messages.html' %}
+              <table class="table table-hover table-center mb-0">
+                <thead>
+                  <tr>
+                    <th class="text-center">First Name</th>
+                    <th class="text-center">Last Name</th>
+                    <th class="text-center">Email</th>
+                    <th class="text-center">Username</th>
+                    <th class="text-center">Address</th>
+                  </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                      <td class="text-center">{{ user.first_name }}</td>
+                      <td class="text-center">{{ user.last_name }}</td>
+                      <td class="text-center">{{ user.email }}</td>
+                      <td class="text-center">{{ user.username }}</td>
+                      {% if user.user_type == '2' %}
+                      <td class="text-center">{{ student.address }}</td>
+                      {% elif user.user_type == '3' %}
+                      <td class="text-center">{{ staff.address }}</td>
+                      {% endif %}
+                    </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+          
+        </div>
+      </div>
+    </div>
+    <div class="text-center mb-4">
+        <a class="btn btn-primary" href="{% url 'profile' %}" style="height: 40px; width: 1000px;"><i class="fas fa-edit"></i>&nbsp;&nbsp;Update Profile</a>
+      </div>
+  </div>
+{% endblock %}

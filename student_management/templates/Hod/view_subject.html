@@ -1,0 +1,63 @@
+{% extends 'base.html' %}
+
+{% block content %}
+  <div class="content container-fluid">
+    <div class="page-header">
+      <div class="row align-items-center">
+        <div class="col">
+          <h3 class="page-title">Course</h3>
+          <ul class="breadcrumb">
+            <li class="breadcrumb-item">
+              <a>Dashboard</a>
+            </li>
+            <li class="breadcrumb-item active">Course</li>
+          </ul>
+        </div>
+        
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-sm-12">
+        <div class="card card-table">
+          <div class="card-body">
+            <div class="table-responsive">
+              {% include 'includes/messages.html' %}
+              <table id="table_id" class="table table-hover table-center mb-0">
+                <thead>
+                  <tr>
+                    <th>ID</th>
+                    <th>Subject Name</th>
+                    <th>Course</th>
+                    <th>Staff</th>
+                    <th>Created At</th>
+                    <th>Updated At</th>
+                    <th class="text-right">Action</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {% for subject in subject %}
+                    <tr>
+                      <td>{{ subject.id }}</td>
+                      <td>{{ subject.name }}</td>
+                      <td>{{ subject.course }}</td>
+                      <td>{{ subject.staff.admin.first_name }} {{ subject.staff.admin.last_name }}</td>
+                      <td>{{ subject.created_at }}</td>
+                      <td>{{ subject.updated_at }}</td>
+
+                      <td class="text-right">
+                        <div class="actions">
+                          <a href="{% url 'subject_edit' subject.id %}" class="btn btn-sm bg-success-light mr-2"><i class="fas fa-pen"></i></a>
+                          <a href="{% url 'subject_del' subject.id %}" class="btn btn-sm bg-danger-light"><i class="fas fa-trash"></i></a>
+                        </div>
+                      </td>
+                    </tr>
+                  {% endfor %}
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+{% endblock %}
