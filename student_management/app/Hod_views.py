@@ -1,7 +1,9 @@
 from django.shortcuts import render, redirect
+from django.http import HttpResponse
 from django.contrib.auth.decorators import login_required
 from .models import *
 from django.contrib import messages
+import csv
 
 @login_required(login_url='/')
 def home(request):
@@ -228,6 +230,20 @@ def staff_view(request):
     staff = Staff.objects.all()
     return render(request, 'Hod/view_staff.html', {'staff': staff})
 
+@login_required(login_url='/')
+def staff_save(request):
+    response = HttpResponse(content_type='text/csv')
+    response['Content-Disposition'] = 'attachment; filename=staff.csv'
+    
+    writer = csv.writer(response)
+    staffs = Staff.objects.all()
+
+    writer.writerow(['Name', 'Email', 'Address', 'Gender', 'Created Time', 'Updated Time'])
+
+    for staff in staffs:
+        writer.writerow([staff.admin.first_name +" "+ staff.admin.last_name, staff.admin.email, staff.address, staff.gender, staff.created_at, staff.updated_at])
+        
+    return response
 @login_required(login_url='/')
 def staff_edit(request, id):
     staff = Staff.objects.get(id=id)
