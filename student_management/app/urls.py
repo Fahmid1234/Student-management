@@ -19,6 +19,7 @@ urlpatterns = [
     path('Hod/student/edit/<int:id>', Hod_views.student_edit, name='edit_student'),
     path('Hod/student/update', Hod_views.student_update, name='update_student'),
     path('Hod/student/delete/<int:id>', Hod_views.student_delete, name='delete_student'),
+    path('Hod/student/csv', Hod_views.student_save, name='student_save'),
     
     path('Hod/course/add', Hod_views.course_add, name='course_add'),
     path('Hod/course/view', Hod_views.course_view, name='course_view'),

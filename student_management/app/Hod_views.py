@@ -78,6 +78,23 @@ def student_views(request):
     return render(request, 'Hod/view_student.html', {'student': student})
 
 @login_required(login_url='/')
+def student_save(request):
+    response = HttpResponse(content_type='text/csv')
+    print(response)
+    response['Content-Disposition'] = 'attachment; filename=students.csv'
+    
+    writer = csv.writer(response)
+    
+    students = Student.objects.all()
+
+    writer.writerow(['Name', 'Email', 'Course', 'Gender', 'Address', 'Session Start', 'Session End', 'Created Time', 'Updated Time'])
+
+    for student in students:
+        writer.writerow([student.admin.first_name +" "+ student.admin.last_name, student.admin.email, student.course_id.name, student.gender, student.address, student.session_id.start_session, student.session_id.end_session, student.created_at, student.updated_at])
+        
+    return response
+
+@login_required(login_url='/')
 def student_edit(request, id):
     stdnt = Student.objects.filter(id=id)
     course = Course.objects.all()
