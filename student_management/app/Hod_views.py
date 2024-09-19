@@ -80,7 +80,6 @@ def student_views(request):
 @login_required(login_url='/')
 def student_save(request):
     response = HttpResponse(content_type='text/csv')
-    print(response)
     response['Content-Disposition'] = 'attachment; filename=students.csv'
     
     writer = csv.writer(response)
