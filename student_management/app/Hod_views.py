@@ -13,8 +13,6 @@ def home(request):
     subject_count = Subject.objects.all().count()
     male_student = Student.objects.filter(gender='Male').count()
     female_student = Student.objects.filter(gender='Female').count()
-    print(male_student)
-    print(female_student)
     
     return render(request, 'Hod/home.html', {"student_count": student_count, "staff_count": staff_count, "course_count": course_count, "subject_count": subject_count, "male_student": male_student, "female_student": female_student})
 

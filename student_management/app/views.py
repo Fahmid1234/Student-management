@@ -10,7 +10,7 @@ from django.contrib.auth.decorators import login_required
 def base_view(request):
     return render(request, 'base.html')
 
-def login_veiw(request):
+def login_view(request):
     user = request.user
     if user.is_authenticated:
         if user.user_type=='1':
